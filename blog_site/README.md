@@ -19,11 +19,12 @@ MariaDB 애플리케이션 계정은 `database/create_blog_user.sql`의 비밀�
 
 ## 3. Python 자동화 준비
 
-외부 Python 프로젝트가 `C:\ProjectAll\blog`에 있을 때 다음 명령으로 전용 환경을 준비합니다.
+저장소의 `automation` 폴더에서 다음 명령으로 전용 환경을 준비합니다.
 
 ```powershell
-python -m venv C:\ProjectAll\blog\.venv
-C:\ProjectAll\blog\.venv\Scripts\python.exe -m pip install -r C:\ProjectAll\blog\requirements.txt
+python -m venv C:\ProjectAll\blog_site\automation\.venv
+C:\ProjectAll\blog_site\automation\.venv\Scripts\python.exe -m pip install -r C:\ProjectAll\blog_site\automation\requirements.txt
+Copy-Item C:\ProjectAll\blog_site\automation\.env.example C:\ProjectAll\blog_site\automation\.env
 ```
 
 ## 4. 필요한 Java 라이브러리

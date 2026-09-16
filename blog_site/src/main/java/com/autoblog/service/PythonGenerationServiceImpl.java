@@ -23,7 +23,7 @@ public class PythonGenerationServiceImpl implements GenerationService {
     @Override
     public GenerationPreview generatePreview(String keyword) {
         try {
-            // 실제 글 생성 품질 로직은 D:\ProjectAll\blog\blog_automation.py에 있습니다.
+            // 실제 글 생성 품질 로직은 저장소의 automation/blog_automation.py에 있습니다.
             // Java는 해당 Python 스크립트를 실행하고 JSON 결과만 파싱합니다.
             ProcessBuilder builder = new ProcessBuilder(
                     pythonExecutable,

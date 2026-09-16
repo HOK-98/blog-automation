@@ -56,8 +56,8 @@
 
 위치:
 
-- 외부 Python 프로젝트: `D:\ProjectAll\blog\.env`
-- 실행 스크립트: `D:\ProjectAll\blog\blog_automation.py`
+- Python 프로젝트 설정: `C:\ProjectAll\blog_site\automation\.env`
+- 실행 스크립트: `C:\ProjectAll\blog_site\automation\blog_automation.py`
 
 필요값:
 
@@ -82,7 +82,7 @@
 
 위치:
 
-- `D:\ProjectAll\blog\.env`
+- `C:\ProjectAll\blog_site\automation\.env`
 
 필요값:
 

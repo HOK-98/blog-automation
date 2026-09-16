@@ -50,7 +50,7 @@
     </bean>
 
     <bean id="imageGenerationService" class="com.autoblog.service.OpenAiImageGenerationServiceImpl">
-        <property name="envFilePath" value="C:\ProjectAll\blog\.env"/>
+        <property name="envFilePath" value="C:\ProjectAll\blog_site\automation\.env"/>
         <property name="imageModel" value="gpt-image-1"/>
         <property name="imageSize" value="1024x1024"/>
     </bean>
@@ -74,9 +74,9 @@
     </bean>
 
     <bean id="generationService" class="com.autoblog.service.PythonGenerationServiceImpl">
-        <property name="pythonExecutable" value="C:\ProjectAll\blog\.venv\Scripts\python.exe"/>
-        <property name="scriptPath" value="C:\ProjectAll\blog\blog_automation.py"/>
-        <property name="workingDirectory" value="C:\ProjectAll\blog"/>
+        <property name="pythonExecutable" value="C:\ProjectAll\blog_site\automation\.venv\Scripts\python.exe"/>
+        <property name="scriptPath" value="C:\ProjectAll\blog_site\automation\blog_automation.py"/>
+        <property name="workingDirectory" value="C:\ProjectAll\blog_site\automation"/>
     </bean>
 
     <bean id="generatedDraftService" class="com.autoblog.service.GeneratedDraftServiceImpl">
@@ -94,9 +94,9 @@
         <property name="blogPostDao" ref="blogPostDao"/>
         <property name="generatedDraftDao" ref="generatedDraftDao"/>
         <property name="wordpressSiteService" ref="wordpressSiteService"/>
-        <property name="pythonExecutable" value="C:\ProjectAll\blog\.venv\Scripts\python.exe"/>
-        <property name="scriptPath" value="C:\ProjectAll\blog\blog_automation.py"/>
-        <property name="workingDirectory" value="C:\ProjectAll\blog"/>
+        <property name="pythonExecutable" value="C:\ProjectAll\blog_site\automation\.venv\Scripts\python.exe"/>
+        <property name="scriptPath" value="C:\ProjectAll\blog_site\automation\blog_automation.py"/>
+        <property name="workingDirectory" value="C:\ProjectAll\blog_site\automation"/>
     </bean>
 
     <bean id="scheduledAutomationService" class="com.autoblog.service.ScheduledAutomationServiceImpl"
