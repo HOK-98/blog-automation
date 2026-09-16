@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- Copy this file to ApplicationContext.xml and replace every CHANGE_ME value. -->
+    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="org.mariadb.jdbc.Driver"/>
+        <property name="url" value="jdbc:mariadb://localhost:3306/blog_site?useUnicode=true&amp;characterEncoding=UTF-8"/>
+        <property name="username" value="blog_user"/>
+        <property name="password" value="CHANGE_ME"/>
+    </bean>
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+        <property name="mapperLocations" value="classpath:mappers/*.xml"/>
+    </bean>
+
+    <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg ref="sqlSessionFactory"/>
+    </bean>
+
+    <bean id="blogPostDao" class="com.autoblog.dao.BlogPostDaoImpl">
+        <property name="sqlSession" ref="sqlSessionTemplate"/>
+    </bean>
+    <bean id="wordpressSiteDao" class="com.autoblog.dao.WordpressSiteDaoImpl">
+        <property name="sqlSession" ref="sqlSessionTemplate"/>
+    </bean>
+    <bean id="generatedDraftDao" class="com.autoblog.dao.GeneratedDraftDaoImpl">
+        <property name="sqlSession" ref="sqlSessionTemplate"/>
+    </bean>
+    <bean id="keywordDao" class="com.autoblog.dao.KeywordDaoImpl">
+        <property name="sqlSession" ref="sqlSessionTemplate"/>
+    </bean>
+    <bean id="wordpressSiteService" class="com.autoblog.service.WordpressSiteServiceImpl">
+        <property name="wordpressSiteDao" ref="wordpressSiteDao"/>
+    </bean>
+
+    <bean id="wordpressSyncService" class="com.autoblog.service.WordpressSyncServiceImpl">
+        <property name="blogPostDao" ref="blogPostDao"/>
+        <property name="wordpressSiteService" ref="wordpressSiteService"/>
+        <property name="ga4AnalyticsService" ref="ga4AnalyticsService"/>
+    </bean>
+
+    <bean id="wordpressPostService" class="com.autoblog.service.WordpressPostServiceImpl">
+        <property name="wordpressSiteService" ref="wordpressSiteService"/>
+    </bean>
+
+    <bean id="imageGenerationService" class="com.autoblog.service.OpenAiImageGenerationServiceImpl">
+        <property name="envFilePath" value="C:\ProjectAll\blog\.env"/>
+        <property name="imageModel" value="gpt-image-1"/>
+        <property name="imageSize" value="1024x1024"/>
+    </bean>
+
+    <bean id="dashboardService" class="com.autoblog.service.DashboardServiceImpl">
+        <property name="blogPostDao" ref="blogPostDao"/>
+        <property name="wordpressSyncService" ref="wordpressSyncService"/>
+        <property name="wordpressSiteService" ref="wordpressSiteService"/>
+    </bean>
+
+    <bean id="statisticsService" class="com.autoblog.service.StatisticsServiceImpl">
+        <property name="blogPostDao" ref="blogPostDao"/>
+        <property name="ga4AnalyticsService" ref="ga4AnalyticsService"/>
+        <property name="wordpressSiteService" ref="wordpressSiteService"/>
+    </bean>
+
+    <bean id="pageViewDebugService" class="com.autoblog.service.PageViewDebugServiceImpl">
+        <property name="blogPostDao" ref="blogPostDao"/>
+        <property name="ga4AnalyticsService" ref="ga4AnalyticsService"/>
+        <property name="wordpressSiteService" ref="wordpressSiteService"/>
+    </bean>
+
+    <bean id="generationService" class="com.autoblog.service.PythonGenerationServiceImpl">
+        <property name="pythonExecutable" value="C:\ProjectAll\blog\.venv\Scripts\python.exe"/>
+        <property name="scriptPath" value="C:\ProjectAll\blog\blog_automation.py"/>
+        <property name="workingDirectory" value="C:\ProjectAll\blog"/>
+    </bean>
+
+    <bean id="generatedDraftService" class="com.autoblog.service.GeneratedDraftServiceImpl">
+        <property name="generatedDraftDao" ref="generatedDraftDao"/>
+        <property name="wordpressSiteService" ref="wordpressSiteService"/>
+        <property name="wordpressPostService" ref="wordpressPostService"/>
+        <property name="wordpressSyncService" ref="wordpressSyncService"/>
+        <property name="keywordService" ref="keywordService"/>
+        <property name="blogPostDao" ref="blogPostDao"/>
+        <property name="imageGenerationService" ref="imageGenerationService"/>
+    </bean>
+
+    <bean id="keywordService" class="com.autoblog.service.KeywordServiceImpl">
+        <property name="keywordDao" ref="keywordDao"/>
+        <property name="blogPostDao" ref="blogPostDao"/>
+        <property name="generatedDraftDao" ref="generatedDraftDao"/>
+        <property name="wordpressSiteService" ref="wordpressSiteService"/>
+        <property name="pythonExecutable" value="C:\ProjectAll\blog\.venv\Scripts\python.exe"/>
+        <property name="scriptPath" value="C:\ProjectAll\blog\blog_automation.py"/>
+        <property name="workingDirectory" value="C:\ProjectAll\blog"/>
+    </bean>
+
+    <bean id="scheduledAutomationService" class="com.autoblog.service.ScheduledAutomationServiceImpl"
+          init-method="start" destroy-method="stop">
+        <property name="wordpressSiteService" ref="wordpressSiteService"/>
+        <property name="wordpressPostService" ref="wordpressPostService"/>
+        <property name="keywordService" ref="keywordService"/>
+        <property name="generationService" ref="generationService"/>
+        <property name="generatedDraftService" ref="generatedDraftService"/>
+        <property name="wordpressSyncService" ref="wordpressSyncService"/>
+    </bean>
+
+    <bean id="ga4AnalyticsService" class="com.autoblog.service.Ga4AnalyticsServiceImpl">
+        <property name="propertyId" value="CHANGE_ME"/>
+        <property name="clientId" value="CHANGE_ME"/>
+        <property name="clientSecret" value="CHANGE_ME"/>
+        <property name="refreshToken" value="CHANGE_ME"/>
+    </bean>
+</beans>

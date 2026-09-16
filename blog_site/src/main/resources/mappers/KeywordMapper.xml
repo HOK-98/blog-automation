@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.autoblog.mapper.KeywordMapper">
+    <insert id="insert" parameterType="KeywordItem">
+        INSERT INTO keywords (site_id, keyword, group_name, status)
+        VALUES (#{siteId}, #{keyword}, #{groupName}, #{status})
+    </insert>
+    <select id="findBySite" resultType="KeywordItem">
+        SELECT * FROM keywords
+        WHERE site_id = #{siteId}
+        <if test="query != null and query != ''">
+            AND keyword LIKE CONCAT('%', #{query}, '%')
+        </if>
+        <if test="category != null and category != '' and category != 'all'">
+            AND group_name = #{category}
+        </if>
+        ORDER BY created_at DESC, id DESC
+    </select>
+    <select id="countBySite" parameterType="long" resultType="int">
+        SELECT COUNT(*) FROM keywords WHERE site_id = #{value}
+    </select>
+    <select id="findById" resultType="KeywordItem">
+        SELECT * FROM keywords WHERE site_id=#{siteId} AND id=#{id}
+    </select>
+    <select id="countExisting" resultType="int">
+        SELECT COUNT(*) FROM keywords
+        WHERE site_id=#{siteId}
+          AND group_name=#{category}
+          AND keyword=#{keyword}
+    </select>
+    <delete id="deleteByIds">
+        DELETE FROM keywords
+        WHERE site_id = #{siteId}
+          AND id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <delete id="deleteByKeyword">
+        DELETE FROM keywords
+        WHERE site_id = #{siteId}
+          AND LOWER(TRIM(keyword)) = LOWER(TRIM(#{keyword}))
+    </delete>
+</mapper>

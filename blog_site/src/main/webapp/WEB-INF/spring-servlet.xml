@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <mvc:resources mapping="/assets/**" location="/assets/"/>
+    <mvc:default-servlet-handler/>
+    <mvc:interceptors>
+        <bean class="com.autoblog.controller.SiteModelInterceptor">
+            <property name="wordpressSiteService" ref="wordpressSiteService"/>
+        </bean>
+    </mvc:interceptors>
+
+    <bean name="/dashboard" class="com.autoblog.controller.HomeDashboardController">
+        <property name="dashboardService" ref="dashboardService"/>
+        <property name="statisticsService" ref="statisticsService"/>
+        <property name="wordpressSiteService" ref="wordpressSiteService"/>
+    </bean>
+
+    <bean name="/posts" class="com.autoblog.controller.DashboardController">
+        <property name="dashboardService" ref="dashboardService"/>
+        <property name="wordpressSiteService" ref="wordpressSiteService"/>
+    </bean>
+
+    <bean name="/posts/detail" class="com.autoblog.controller.PostDetailController">
+        <property name="dashboardService" ref="dashboardService"/>
+    </bean>
+
+    <bean name="/posts/edit" class="com.autoblog.controller.PostEditController">
+        <property name="dashboardService" ref="dashboardService"/>
+    </bean>
+
+    <bean name="/posts/update" class="com.autoblog.controller.PostUpdateController">
+        <property name="dashboardService" ref="dashboardService"/>
+        <property name="wordpressPostService" ref="wordpressPostService"/>
+        <property name="wordpressSyncService" ref="wordpressSyncService"/>
+    </bean>
+
+    <bean name="/posts/delete" class="com.autoblog.controller.PostDeleteController">
+        <property name="dashboardService" ref="dashboardService"/>
+        <property name="wordpressPostService" ref="wordpressPostService"/>
+        <property name="wordpressSyncService" ref="wordpressSyncService"/>
+    </bean>
+    <bean name="/posts/sync" class="com.autoblog.controller.WordpressSyncController">
+        <property name="wordpressSyncService" ref="wordpressSyncService"/>
+    </bean>
+
+    <bean name="/keywords" class="com.autoblog.controller.KeywordAnalysisController">
+        <property name="keywordService" ref="keywordService"/>
+    </bean>
+
+    <bean name="/keywords/manage" class="com.autoblog.controller.KeywordManagementController">
+        <property name="keywordService" ref="keywordService"/>
+        <property name="dashboardService" ref="dashboardService"/>
+        <property name="wordpressSiteService" ref="wordpressSiteService"/>
+    </bean>
+    <bean name="/keywords/delete" class="com.autoblog.controller.KeywordDeleteController">
+        <property name="keywordService" ref="keywordService"/>
+    </bean>
+
+    <bean name="/generation" class="com.autoblog.controller.AutoGenerationController">
+        <property name="generationService" ref="generationService"/>
+        <property name="generatedDraftService" ref="generatedDraftService"/>
+        <property name="wordpressSiteService" ref="wordpressSiteService"/>
+    </bean>
+    <bean name="/drafts" class="com.autoblog.controller.GeneratedDraftListController">
+        <property name="generatedDraftService" ref="generatedDraftService"/>
+    </bean>
+    <bean name="/drafts/edit" class="com.autoblog.controller.GeneratedDraftEditController">
+        <property name="generatedDraftService" ref="generatedDraftService"/>
+        <property name="wordpressPostService" ref="wordpressPostService"/>
+        <property name="wordpressSiteService" ref="wordpressSiteService"/>
+    </bean>
+    <bean name="/drafts/update" class="com.autoblog.controller.GeneratedDraftUpdateController">
+        <property name="generatedDraftService" ref="generatedDraftService"/>
+    </bean>
+    <bean name="/drafts/publish" class="com.autoblog.controller.GeneratedDraftPublishController">
+        <property name="generatedDraftService" ref="generatedDraftService"/>
+    </bean>
+    <bean name="/drafts/delete" class="com.autoblog.controller.GeneratedDraftDeleteController">
+        <property name="generatedDraftService" ref="generatedDraftService"/>
+    </bean>
+
+
+    <bean name="/statistics" class="com.autoblog.controller.StatisticsController">
+        <property name="statisticsService" ref="statisticsService"/>
+        <property name="wordpressSiteService" ref="wordpressSiteService"/>
+    </bean>
+    <bean name="/statistics/pageviews/debug" class="com.autoblog.controller.PageViewDebugController">
+        <property name="pageViewDebugService" ref="pageViewDebugService"/>
+    </bean>
+
+    <bean name="/settings" class="com.autoblog.controller.SettingsController">
+        <property name="wordpressSiteService" ref="wordpressSiteService"/>
+        <property name="wordpressPostService" ref="wordpressPostService"/>
+    </bean>
+    <bean name="/sites/save" class="com.autoblog.controller.SiteSaveController">
+        <property name="wordpressSiteService" ref="wordpressSiteService"/>
+    </bean>
+    <bean name="/sites/switch" class="com.autoblog.controller.SiteSwitchController">
+        <property name="wordpressSiteService" ref="wordpressSiteService"/>
+    </bean>
+    <bean name="/sites/test" class="com.autoblog.controller.SiteConnectionTestController">
+        <property name="wordpressSiteService" ref="wordpressSiteService"/>
+        <property name="wordpressPostService" ref="wordpressPostService"/>
+    </bean>
+    <bean name="/automation/run-now" class="com.autoblog.controller.AutomationRunNowController">
+        <property name="scheduledAutomationService" ref="scheduledAutomationService"/>
+    </bean>
+
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/views/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+</beans>

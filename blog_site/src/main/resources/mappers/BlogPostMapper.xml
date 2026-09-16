@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.autoblog.mapper.BlogPostMapper">
+
+    <sql id="postColumns">
+        id,
+        site_id,
+        title,
+        summary,
+        content,
+        category,
+        status,
+        tags,
+        cover_image_url,
+        wordpress_url,
+        view_count,
+        published_at,
+        updated_at
+    </sql>
+
+    <sql id="filters">
+        <if test="keyword != null and keyword != ''">
+            AND (
+                title LIKE CONCAT('%', #{keyword}, '%')
+                OR summary LIKE CONCAT('%', #{keyword}, '%')
+                OR tags LIKE CONCAT('%', #{keyword}, '%')
+            )
+        </if>
+        <if test="category != null and category != '' and category != 'all'">
+            AND category = #{category}
+        </if>
+        <if test="status != null and status != '' and status != 'all'">
+            AND status = #{status}
+        </if>
+    </sql>
+
+    <select id="findPosts" resultType="BlogPost">
+        SELECT
+        <include refid="postColumns"/>
+        FROM blog_posts
+        WHERE site_id = #{siteId}
+        <include refid="filters"/>
+        ORDER BY published_at DESC, id DESC
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <select id="countPosts" resultType="int">
+        SELECT COUNT(*)
+        FROM blog_posts
+        WHERE site_id = #{siteId}
+        <include refid="filters"/>
+    </select>
+
+    <select id="countByCategory" resultType="CountRow">
+        SELECT category AS name, COUNT(*) AS count
+        FROM blog_posts
+        WHERE site_id = #{value}
+        GROUP BY category
+        ORDER BY COUNT(*) DESC
+    </select>
+
+    <select id="countByStatus" resultType="CountRow">
+        SELECT status AS name, COUNT(*) AS count
+        FROM blog_posts
+        WHERE site_id = #{value}
+        GROUP BY status
+        ORDER BY COUNT(*) DESC
+    </select>
+
+    <select id="findPopularPosts" resultType="BlogPost">
+        SELECT
+        <include refid="postColumns"/>
+        FROM blog_posts
+        WHERE site_id = #{value}
+        ORDER BY view_count DESC, published_at DESC
+        LIMIT 10
+    </select>
+
+    <select id="findPostById" resultType="BlogPost">
+        SELECT
+        <include refid="postColumns"/>
+        FROM blog_posts
+        WHERE site_id = #{siteId}
+          AND id = #{id}
+    </select>
+
+    <insert id="upsertWordpressPost" parameterType="BlogPost">
+        INSERT INTO blog_posts (
+            wordpress_post_id,
+            site_id,
+            title,
+            summary,
+            content,
+            category,
+            status,
+            tags,
+            cover_image_url,
+            wordpress_url,
+            view_count,
+            published_at,
+            updated_at
+        ) VALUES (
+            #{wordpressPostId},
+            #{siteId},
+            #{title},
+            #{summary},
+            #{content},
+            #{category},
+            #{status},
+            #{tags},
+            #{coverImageUrl},
+            #{wordpressUrl},
+            #{viewCount},
+            #{publishedAt},
+            #{updatedAt}
+        )
+        ON DUPLICATE KEY UPDATE
+            title = VALUES(title),
+            summary = VALUES(summary),
+            content = VALUES(content),
+            category = VALUES(category),
+            status = VALUES(status),
+            tags = VALUES(tags),
+            cover_image_url = VALUES(cover_image_url),
+            wordpress_url = VALUES(wordpress_url),
+            view_count = VALUES(view_count),
+            published_at = VALUES(published_at),
+            updated_at = VALUES(updated_at)
+    </insert>
+
+    <delete id="deleteById" parameterType="long">
+        DELETE FROM blog_posts
+        WHERE id = #{value}
+    </delete>
+
+    <select id="countPublishedByDay" resultType="DailyCount">
+        SELECT DATE_FORMAT(published_at, '%m-%d') AS day, COUNT(*) AS count
+        FROM blog_posts
+        WHERE site_id = #{value}
+          AND published_at IS NOT NULL
+        GROUP BY DATE_FORMAT(published_at, '%m-%d')
+        ORDER BY day
+    </select>
+</mapper>

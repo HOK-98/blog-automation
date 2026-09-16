@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.autoblog.mapper.WordpressSiteMapper">
+    <select id="findAll" resultType="WordpressSite">
+        SELECT * FROM wordpress_sites ORDER BY active DESC, name
+    </select>
+    <select id="findActive" resultType="WordpressSite">
+        SELECT * FROM wordpress_sites WHERE active = 1 LIMIT 1
+    </select>
+    <select id="findById" parameterType="long" resultType="WordpressSite">
+        SELECT * FROM wordpress_sites WHERE id = #{value}
+    </select>
+    <insert id="insert" parameterType="WordpressSite" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO wordpress_sites
+        (name, description, site_url, posts_api_url, admin_email, username, application_password,
+         timezone, language, default_post_status, seo_title_suffix, meta_description_template,
+         auto_keyword_collection, auto_content_generation, auto_publishing, schedule_enabled,
+         schedule_start_time, scheduled_keyword_count, scheduled_post_count, schedule_category, last_scheduled_run_date,
+         notification_enabled, notification_email, notify_on_publish, auto_image_generation, auto_internal_links, active)
+        VALUES
+        (#{name}, #{description}, #{siteUrl}, #{postsApiUrl}, #{adminEmail}, #{username}, #{applicationPassword},
+         #{timezone}, #{language}, #{defaultPostStatus}, #{seoTitleSuffix}, #{metaDescriptionTemplate},
+         #{autoKeywordCollection}, #{autoContentGeneration}, #{autoPublishing}, #{scheduleEnabled},
+         #{scheduleStartTime}, #{scheduledKeywordCount}, #{scheduledPostCount}, #{scheduleCategory}, #{lastScheduledRunDate},
+         #{notificationEnabled}, #{notificationEmail}, #{notifyOnPublish}, #{autoImageGeneration}, #{autoInternalLinks}, #{active})
+    </insert>
+    <update id="update" parameterType="WordpressSite">
+        UPDATE wordpress_sites SET
+        name=#{name}, description=#{description}, site_url=#{siteUrl}, posts_api_url=#{postsApiUrl},
+        admin_email=#{adminEmail}, username=#{username}, application_password=#{applicationPassword},
+        timezone=#{timezone}, language=#{language}, default_post_status=#{defaultPostStatus},
+        seo_title_suffix=#{seoTitleSuffix}, meta_description_template=#{metaDescriptionTemplate},
+        auto_keyword_collection=#{autoKeywordCollection}, auto_content_generation=#{autoContentGeneration},
+        auto_publishing=#{autoPublishing}, schedule_enabled=#{scheduleEnabled},
+        schedule_start_time=#{scheduleStartTime}, scheduled_keyword_count=#{scheduledKeywordCount},
+        scheduled_post_count=#{scheduledPostCount}, schedule_category=#{scheduleCategory},
+        last_scheduled_run_date=#{lastScheduledRunDate}, notification_enabled=#{notificationEnabled},
+        notification_email=#{notificationEmail}, notify_on_publish=#{notifyOnPublish},
+        auto_image_generation=#{autoImageGeneration}, auto_internal_links=#{autoInternalLinks}
+        WHERE id=#{id}
+    </update>
+    <update id="updateLastScheduledRunDate">
+        UPDATE wordpress_sites SET last_scheduled_run_date = CURDATE() WHERE id = #{value}
+    </update>
+    <update id="deactivateAll">UPDATE wordpress_sites SET active = 0</update>
+    <update id="activate" parameterType="long">UPDATE wordpress_sites SET active = 1 WHERE id = #{value}</update>
+</mapper>

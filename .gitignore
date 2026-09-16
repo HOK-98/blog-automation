@@ -22,3 +22,24 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+
+# Eclipse workspace and generated output
+.metadata/
+.agents/
+.codex/
+Servers/
+**/build/
+**/.settings/
+
+# Local credentials and machine-specific runtime configuration
+**/src/main/resources/ApplicationContext.xml
+**/database/migration_multisite.sql
+.env
+.env.*
+!.env.example
+
+# Python environments and caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]

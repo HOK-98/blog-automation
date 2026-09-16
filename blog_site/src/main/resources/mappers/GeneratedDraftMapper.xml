@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.autoblog.mapper.GeneratedDraftMapper">
+    <insert id="insert" parameterType="GeneratedDraft" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO generated_drafts
+        (site_id, keyword, title, slug, excerpt, content_html, tags, categories, wordpress_category_id,
+         verification_score, approved, issues, prompt_tokens, completion_tokens, total_tokens, official_images, status)
+        VALUES
+        (#{siteId}, #{keyword}, #{title}, #{slug}, #{excerpt}, #{contentHtml}, #{tags}, #{categories}, #{wordpressCategoryId},
+         #{verificationScore}, #{approved}, #{issues}, #{promptTokens}, #{completionTokens}, #{totalTokens}, #{officialImages}, #{status})
+    </insert>
+    <select id="findBySite" parameterType="long" resultType="GeneratedDraft">
+        SELECT d.*, s.name AS site_name
+        FROM generated_drafts d
+        JOIN wordpress_sites s ON s.id = d.site_id
+        WHERE d.site_id = #{value}
+        ORDER BY d.updated_at DESC, d.id DESC
+    </select>
+    <select id="findAll" resultType="GeneratedDraft">
+        SELECT d.*, s.name AS site_name
+        FROM generated_drafts d
+        JOIN wordpress_sites s ON s.id = d.site_id
+        ORDER BY d.updated_at DESC, d.id DESC
+    </select>
+    <select id="findById" resultType="GeneratedDraft">
+        SELECT * FROM generated_drafts WHERE site_id = #{siteId} AND id = #{id}
+    </select>
+    <update id="update" parameterType="GeneratedDraft">
+        UPDATE generated_drafts SET
+        title=#{title}, slug=#{slug}, excerpt=#{excerpt}, content_html=#{contentHtml},
+        tags=#{tags}, categories=#{categories}, wordpress_category_id=#{wordpressCategoryId}, verification_score=#{verificationScore},
+        approved=#{approved}, issues=#{issues}, prompt_tokens=#{promptTokens},
+        completion_tokens=#{completionTokens}, total_tokens=#{totalTokens}, official_images=#{officialImages}, status=#{status}
+        WHERE id=#{id} AND site_id=#{siteId}
+    </update>
+    <delete id="delete">
+        DELETE FROM generated_drafts WHERE id=#{id} AND site_id=#{siteId}
+    </delete>
+    <delete id="deleteByIds">
+        DELETE FROM generated_drafts
+        WHERE site_id = #{siteId}
+          AND id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
+

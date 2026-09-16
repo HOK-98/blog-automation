@@ -1,0 +1,118 @@
+:root { --bg:#06101d; --line:rgba(255,255,255,.08); --text:#eef3ff; --muted:#8c9bb5; --blue:#5a77ff; }
+* { box-sizing:border-box; }
+body { margin:0; min-height:100vh; background:var(--bg); color:var(--text); font-family:"Pretendard","Noto Sans KR",Arial,sans-serif; }
+.edit-shell { width:100%; min-height:100vh; display:grid; grid-template-columns:220px minmax(0,1fr); background:linear-gradient(180deg,#0b1525,#09111f); }
+.sidebar { padding:28px 18px 20px; border-right:1px solid var(--line); display:flex; flex-direction:column; }
+.brand { display:flex; align-items:center; gap:12px; margin-bottom:34px; }
+.brand span { width:34px; height:34px; display:grid; place-items:center; border-radius:10px; background:linear-gradient(145deg,#2e5bff,#6f4dff); }
+.brand strong { display:block; }
+.brand small { display:block; margin-top:4px; color:var(--muted); font-size:11px; }
+.side-nav { display:grid; gap:8px; }
+.side-nav a { height:42px; display:flex; align-items:center; gap:12px; padding:0 12px; border-radius:9px; color:#c6d0e4; text-decoration:none; font-size:14px; }
+.side-nav a.active { color:#fff; background:rgba(76,109,255,.18); border:1px solid rgba(103,133,255,.28); }
+.side-nav i { width:16px; font-style:normal; }
+.profile { margin-top:auto; padding:14px; display:flex; gap:10px; align-items:center; border:1px solid var(--line); border-radius:12px; background:rgba(255,255,255,.02); }
+.avatar { width:34px; height:34px; border-radius:50%; background:linear-gradient(135deg,#f5d7c8,#6a778d); }
+.profile strong { display:block; font-size:13px; }
+.profile small { color:var(--muted); font-size:11px; }
+.main-panel { min-width:0; padding:26px; }
+.topbar a { color:#dce5f7; text-decoration:none; }
+.topbar h1 { margin:14px 0 0; font-size:28px; }
+.editor-grid { display:grid; grid-template-columns:minmax(0,1fr) 300px; gap:16px; margin-top:22px; }
+.editor-card,.publish-card,.help-card {
+    border:1px solid var(--line); border-radius:12px; background:rgba(255,255,255,.02); padding:18px;
+}
+label { display:block; margin-bottom:16px; }
+label span { display:block; margin-bottom:8px; color:var(--muted); font-size:13px; }
+input,select,textarea {
+    width:100%; color:#dce5f7; background:rgba(255,255,255,.02); border:1px solid var(--line); border-radius:8px; padding:0 12px;
+}
+input,select { height:44px; }
+textarea.hidden-content { display:none; }
+.editor-toolbar {
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    padding:12px;
+    border:1px solid var(--line);
+    border-bottom:0;
+    border-radius:8px 8px 0 0;
+    background:rgba(255,255,255,.02);
+}
+.editor-toolbar button {
+    min-width:40px;
+    height:34px;
+    padding:0 10px;
+    color:#dce5f7;
+    background:rgba(255,255,255,.03);
+    border:1px solid var(--line);
+    border-radius:7px;
+}
+.rich-editor {
+    min-height:680px;
+    padding:22px;
+    border:1px solid var(--line);
+    border-radius:0 0 8px 8px;
+    background:rgba(255,255,255,.02);
+    color:#dce5f7;
+    line-height:1.9;
+    outline:none;
+}
+.rich-editor h2,.rich-editor h3 {
+    color:#fff;
+    margin-top:28px;
+}
+.rich-editor img {
+    max-width:100%;
+    height:auto;
+    border-radius:10px;
+}
+.rich-editor a {
+    color:#8ea5ff;
+}
+.publish-card h2,.help-card h2 { margin:0 0 16px; font-size:16px; }
+.publish-card div { display:flex; justify-content:space-between; margin-bottom:16px; font-size:13px; }
+.publish-card div span { color:var(--muted); }
+.publish-card button {
+    width:100%; height:46px; border:0; border-radius:8px; color:#fff; background:linear-gradient(135deg,#4c67ff,#674dff); font-weight:700;
+}
+.help-card { margin-top:14px; }
+.help-card p { margin:0; color:#dce5f7; line-height:1.8; font-size:13px; }
+.help-card button {margin-top: 15px;}
+.two-col-fields {
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:12px;
+}
+.excerpt-editor {
+    min-height:100px;
+    padding:12px;
+}
+.draft-editor {
+    min-height:520px;
+    padding:16px;
+    resize:vertical;
+}
+.draft-actions form + form {
+    margin-top:10px;
+}
+.draft-actions button {
+    width:100%;
+    height:44px;
+    border:0;
+    border-radius:8px;
+    color:#fff;
+    background:linear-gradient(135deg,#4c67ff,#674dff);
+    font-weight:700;
+}
+.draft-actions form:last-child button {
+    background:rgba(239,89,102,.14);
+    color:#ff8792;
+    border:1px solid rgba(239,89,102,.5);
+}
+
+select option,
+select optgroup {
+    background: #ffffff;
+    color: #111827;
+}

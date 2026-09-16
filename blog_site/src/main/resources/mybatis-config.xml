@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+
+    <typeAliases>
+        <typeAlias alias="BlogPost" type="com.autoblog.model.BlogPost"/>
+        <typeAlias alias="CountRow" type="com.autoblog.model.CountRow"/>
+        <typeAlias alias="DailyCount" type="com.autoblog.model.DailyCount"/>
+        <typeAlias alias="WordpressSite" type="com.autoblog.model.WordpressSite"/>
+        <typeAlias alias="PageViewMetric" type="com.autoblog.model.PageViewMetric"/>
+        <typeAlias alias="PageViewMatchRow" type="com.autoblog.model.PageViewMatchRow"/>
+        <typeAlias alias="GeneratedDraft" type="com.autoblog.model.GeneratedDraft"/>
+        <typeAlias alias="KeywordItem" type="com.autoblog.model.KeywordItem"/>
+        <typeAlias alias="KeywordTrendPoint" type="com.autoblog.model.KeywordTrendPoint"/>
+        <typeAlias alias="KeywordTrendData" type="com.autoblog.model.KeywordTrendData"/>
+    </typeAliases>
+
+</configuration>
